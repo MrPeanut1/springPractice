@@ -30,9 +30,15 @@ public class AuthController {
     }
 
     @PostMapping("/loginUser")
-    public String login(@RequestParam(required = false) String gameSelection, @RequestParam(required = false) String gamerTag, @RequestParam(required = false) String gamerTagId, @RequestParam String password, @RequestParam(required = false) String firstName, @RequestParam(required = false) String lastName, Model model) {
-        authApi.loginUserByUserType(UserType.PLAYER, SupportedGames.valueOf(gameSelection.toUpperCase()), gamerTag, gamerTagId, password, firstName, lastName);
-        return "redirect:/player/getPlayerStats?playerTag=" + gamerTag + "-" + gamerTagId;
+    public String login(@RequestParam String firstName, @RequestParam String password, @RequestParam String userType) {
+        boolean isValidUser =authApi.loginUserByUserType( firstName, password, UserType.valueOf(userType.toUpperCase()));
+        if (isValidUser && userType.equalsIgnoreCase("player")) {
+            return "redirect:/player/home";
+        }else if(isValidUser && userType.equalsIgnoreCase("admin")){
+            return "redirect:/admin/home";
+        }
+
+        return "Error";
     }
 
     @GetMapping("/register")

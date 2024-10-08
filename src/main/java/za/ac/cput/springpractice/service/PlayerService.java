@@ -9,6 +9,6 @@ public interface PlayerService extends Service <Player,Long>{
 
     List<Player> getAll();
 
-    Player validatePlayer(String gamerTag, String gamerTagId, String game, String password);
+    boolean validatePlayer(String firstName, String password, UserType userType);
     Player getByPlayerTag(String playerTag);
 }

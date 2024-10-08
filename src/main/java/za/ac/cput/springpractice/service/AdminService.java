@@ -8,5 +8,5 @@ import java.util.List;
 public interface AdminService extends Service <Admin,Long>{
     List<Admin> getAll();
 
-    Admin validateAdmin(String firstName,String lastName, String password);
+    boolean validateAdmin(String firstName, String password, UserType userType);
 }

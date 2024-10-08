@@ -14,21 +14,10 @@ import za.ac.cput.springpractice.service.PlayerServiceImpl;
 @RequestMapping("/player")
 public class PlayerController {
 
-    private final PlayerServiceImpl playerService;
 
-    @Autowired
-    public PlayerController(PlayerServiceImpl playerService) {
-        this.playerService = playerService;
+    @GetMapping("/home")
+    public String home(){
+        return "PlayerHome";
     }
 
-
-
-    @GetMapping("/getPlayerStats{playerTag}")
-    public String getPlayerStats(@PathVariable String playerTag, Model model) {
-        String stats = playerService.getPlayerStats(playerTag);
-        Player player = playerService.getByPlayerTag(playerTag);
-        model.addAttribute("player", player);
-        model.addAttribute("stats", stats);
-        return "PlayerStats";
-    }
 }

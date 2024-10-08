@@ -24,12 +24,13 @@ public class AuthApi {
         this.adminService = adminService;
     }
 
-    public void loginUserByUserType(UserType userType, SupportedGames gameSelection, String gamerTag, String gamerTagId, String password, String firstName, String lastName) {
-        if (userType == UserType.PLAYER) {
-            playerService.validatePlayer(gamerTag, gamerTagId, gameSelection.toString(), password);
-        } else {
-            adminService.validateAdmin(firstName, lastName, password);
-        }
+    public boolean loginUserByUserType(String firstName, String password, UserType userType) {
+        boolean isValidPlayer = playerService.validatePlayer(firstName, password, userType);
+        boolean isValidAdmin = adminService.validateAdmin(firstName, password, userType);
+
+        return isValidPlayer || isValidAdmin;
+
+
     }
 
     public void createUserByUserType(UserType userType, SupportedGames gameSelection, String gamerTag, String gamerTagId, String password, String firstName, String lastName) {

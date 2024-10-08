@@ -2,6 +2,7 @@ package za.ac.cput.springpractice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.ac.cput.springpractice.domain.UserType;
 import za.ac.cput.springpractice.overwatch.OverwatchApi;
 import za.ac.cput.springpractice.domain.Player;
 import za.ac.cput.springpractice.repository.PlayerRepository;
@@ -24,8 +25,6 @@ public class PlayerServiceImpl implements PlayerService {
     public List<Player> getAll() {
         return repository.findAll();
     }
-
-
 
     @Override
     public Player create(Player player) {
@@ -50,8 +49,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player validatePlayer(String gamerTag, String gamerTagId, String game, String password) {
-        return repository.findByGamerTagAndGamerTagIdAndGameAndPassword(gamerTag, gamerTagId,game, password);
+    public boolean validatePlayer(String firstName, String password, UserType userType) {
+      return repository.existsByFirstNameAndPasswordAndUserType(firstName, password, userType);
     }
 
 

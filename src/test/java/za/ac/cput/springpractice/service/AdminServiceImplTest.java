@@ -67,8 +67,8 @@ class AdminServiceImplTest {
 
     @Test
     void e_validateAdmin(){
-        Admin validAdmin = adminService.validateAdmin(admin2.getFirstName(), admin2.getLastName(), admin2.getPassword());
-        assertNotNull(validAdmin);
+        boolean validAdmin = adminService.validateAdmin(admin2.getFirstName(), admin2.getPassword(), admin2.getUserType());
+        assertTrue(validAdmin);
         System.out.println("Valid Admin: " + validAdmin);
     }
 }

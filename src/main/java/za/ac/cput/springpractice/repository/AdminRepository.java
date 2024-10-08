@@ -13,5 +13,5 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     Admin findByFirstNameAndUserType(String firstName, UserType userType);
     Admin findByLastNameAndUserType(String lastName, UserType userType);
     Admin findByFirstNameAndLastNameAndUserType(String firstName, String lastName, UserType userType);
-    Admin findByFirstNameAndLastNameAndPassword(String firstName, String lastName, String password);
+    boolean existsByFirstNameAndPasswordAndUserType(String firstName, String lastName, UserType userType);
 }

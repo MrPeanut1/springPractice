@@ -3,6 +3,7 @@ package za.ac.cput.springpractice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.springpractice.domain.Admin;
+import za.ac.cput.springpractice.domain.UserType;
 import za.ac.cput.springpractice.repository.AdminRepository;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public Admin validateAdmin(String firstName, String lastName, String password) {
-        return repository.findByFirstNameAndLastNameAndPassword(firstName, lastName, password);
+    public boolean validateAdmin(String firstName, String password, UserType userType) {
+        return repository.existsByFirstNameAndPasswordAndUserType(firstName, password, userType);
     }
 }
