@@ -1,6 +1,7 @@
 package za.ac.cput.springpractice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.springpractice.domain.UserType;
 import za.ac.cput.springpractice.overwatch.OverwatchApi;
@@ -14,6 +15,10 @@ public class PlayerServiceImpl implements PlayerService {
 
     private final PlayerRepository repository;
     private final OverwatchApi overwatchApi;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
 
     @Autowired
     PlayerServiceImpl(PlayerRepository repository, OverwatchApi overwatchApi) {
@@ -42,15 +47,22 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
 
-    public String getPlayerStats(String playerTag) {
+    public void getPlayerStats(String playerTag) {
         String stats = overwatchApi.getPlayerSummary(playerTag);
         System.out.println("Player Stats: " + stats);
-        return stats;
     }
 
     @Override
     public boolean validatePlayer(String firstName, String password, UserType userType) {
-      return repository.existsByFirstNameAndPasswordAndUserType(firstName, password, userType);
+        Player player = repository.findByFirstNameAndUserType(firstName, userType);
+
+        // If player exists, compare the raw password with the encoded password
+        if (player != null && encoder.matches(password, player.getPassword())) {
+            return true;
+        }
+
+        // Return false if no match found
+        return false;
     }
 
 

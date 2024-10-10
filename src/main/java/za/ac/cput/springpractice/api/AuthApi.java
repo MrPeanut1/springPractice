@@ -2,6 +2,7 @@
 package za.ac.cput.springpractice.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import za.ac.cput.springpractice.domain.Admin;
 import za.ac.cput.springpractice.domain.Player;
@@ -17,6 +18,8 @@ public class AuthApi {
 
     private final PlayerServiceImpl playerService;
     private final AdminService adminService;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
 
     @Autowired
     public AuthApi(PlayerServiceImpl playerService, AdminService adminService) {
@@ -34,11 +37,12 @@ public class AuthApi {
     }
 
     public void createUserByUserType(UserType userType, SupportedGames gameSelection, String gamerTag, String gamerTagId, String password, String firstName, String lastName) {
+        String encodedPassword = encoder.encode(password);
         if (userType == UserType.PLAYER) {
-            Player player = PlayerFactory.createPlayer(gamerTag, gamerTagId, firstName, lastName, password, userType, gameSelection);
+            Player player = PlayerFactory.createPlayer(gamerTag, gamerTagId, firstName, lastName, encodedPassword, userType, gameSelection);
             playerService.create(player);
         } else {
-            Admin admin = AdminFactory.createAdmin(firstName, lastName, password, userType);
+            Admin admin = AdminFactory.createAdmin(firstName, lastName,encodedPassword , userType);
             adminService.create(admin);
         }
     }

@@ -1,6 +1,7 @@
 package za.ac.cput.springpractice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.springpractice.domain.Admin;
 import za.ac.cput.springpractice.domain.UserType;
@@ -11,6 +12,9 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService{
 
     private final AdminRepository repository;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
     AdminServiceImpl(AdminRepository repository) {
@@ -40,6 +44,14 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public boolean validateAdmin(String firstName, String password, UserType userType) {
-        return repository.existsByFirstNameAndPasswordAndUserType(firstName, password, userType);
+        Admin admin = repository.findByFirstNameAndUserType(firstName, userType);
+
+        // If admin exists, compare the raw password with the encoded password
+        if (admin != null && encoder.matches(password, admin.getPassword())) {
+            return true;
+        }
+
+        // Return false if no match found
+        return false;
     }
 }

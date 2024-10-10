@@ -31,6 +31,8 @@ public class AuthController {
 
     @PostMapping("/loginUser")
     public String login(@RequestParam String firstName, @RequestParam String password, @RequestParam String userType) {
+        System.out.println(firstName);
+        System.out.println(password);
         boolean isValidUser =authApi.loginUserByUserType( firstName, password, UserType.valueOf(userType.toUpperCase()));
         if (isValidUser && userType.equalsIgnoreCase("player")) {
             return "redirect:/player/home";
@@ -38,7 +40,7 @@ public class AuthController {
             return "redirect:/admin/home";
         }
 
-        return "Error";
+        return "Error"; //TODO:CHANGE TO VALID ERROR PAGE BUT IGNORE FOR NOW
     }
 
     @GetMapping("/register")

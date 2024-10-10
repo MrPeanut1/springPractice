@@ -7,12 +7,8 @@ import za.ac.cput.springpractice.domain.UserType;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player,Long> {
-    Player findByGamerTag(String gamerTag);
     Player findByGamerTagAndGamerTagId(String gamerTag, String gamerTagId);
-    Player findByGamerTagAndGamerTagIdAndUserId(String gamerTag, String gamerTagId, long userId);
-    Player findByUserId(long userId);
-    Player findByGamerTagAndPasswordAndUserType(String gamerTag, String password, UserType userType);
-    Player findByGamerTagAndGamerTagIdAndGameAndPassword(String gamerTag, String gamerTagId, String game, String password);
-    boolean existsByFirstNameAndPasswordAndUserType(String firstName, String lastName, UserType userType);
+    Player findByFirstName(String firstName);
+    Player findByFirstNameAndUserType(String firstName, UserType userType);
 
 }

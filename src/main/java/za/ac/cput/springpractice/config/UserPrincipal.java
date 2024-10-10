@@ -2,45 +2,45 @@ package za.ac.cput.springpractice.config;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import za.ac.cput.springpractice.domain.Admin;
-import za.ac.cput.springpractice.domain.UserType;
+import za.ac.cput.springpractice.domain.Player;
 
 import java.util.Collection;
-import java.util.Collections;
-
-
+import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-    private final Admin admin;
+    private final String username; // Changed to username for clarity
+    private final String password;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal(Admin admin) {
-        this.admin = admin;
+        this.username = admin.getFirstName(); // or admin.getUsername() if you have a specific field
+        this.password = admin.getPassword();
+        this.authorities = List.of(new SimpleGrantedAuthority("ROLE_" + admin.getUserType().toString().toUpperCase()));
+    }
 
+    public UserPrincipal(Player player) {
+        this.username = player.getFirstName(); // or player.getUsername() if applicable
+        this.password = player.getPassword();
+        this.authorities = List.of(new SimpleGrantedAuthority("ROLE_" + player.getUserType().toString().toUpperCase()));
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(UserType.ADMIN.toString()));
+        return authorities;
     }
-
-
-
 
     @Override
     public String getPassword() {
-        System.out.println(admin.getPassword());
-        return admin.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        System.out.println(admin.getFirstName());
-        return admin.getFirstName();
+        return username; // Changed to username
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
